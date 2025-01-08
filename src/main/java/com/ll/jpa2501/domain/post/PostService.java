@@ -31,6 +31,10 @@ public class PostService {
         return postRepository.findWithShareLockById(id);
     }
 
+    public Optional<Post> findWithWriteLockById(Long id) {
+        return postRepository.findWithWriteLockById(id);
+    }
+
     public Post create(String subject, String content, String username) {
         Post post =  Post.builder()
                 .subject(subject)
@@ -38,5 +42,16 @@ public class PostService {
                 .username(username)
                 .build();
         return postRepository.save(post);
+    }
+
+    @SneakyThrows
+    @Transactional
+    public Post modifyOptimistic(Long id) {
+        Post post = postRepository.findById(id).orElseThrow();
+
+        Thread.sleep(10_000);
+
+        post.setUsername(post.getUsername() + "!");
+        return post;
     }
 }

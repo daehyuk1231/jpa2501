@@ -19,7 +19,7 @@ public class PostController {
         return postService.getPost(id);
     }
     @GetMapping("/findByUsername/{username}")
-    public List<Post> findByUserName(@PathVariable("username") String username) {
+    public List<Post> findByUsername(@PathVariable("username") String username) {
         return postService.findByUsername(username);
     }
 
@@ -27,4 +27,14 @@ public class PostController {
     public Post findWithShareLockById(@PathVariable Long id) {
         return postService.findWithShareLockById(id).orElse(null);
     }
+    @GetMapping("/findWithWriteLockById/{id}")
+    public Post findWithWriteLockById(@PathVariable Long id) {
+        return postService.findWithWriteLockById(id).orElse(null);
+    }
+
+    @GetMapping("/modify/optimistic/{id}")
+    public Post modifyOptimistic(@PathVariable Long id) {
+        return postService.modifyOptimistic(id);
+    }
+
 }
